@@ -4,8 +4,7 @@ services:
     build: .
     # Specifies the container name.
     container_name: my-actions-runner
-    # Passes GitHub repository information and token as environment variables.
-    # GH_TOKEN must be entered directly.
+    # Passes GitHub repository information and token as environment variables.    
     env_file:
       - .env
     # Restarts the container automatically even if the host reboots.

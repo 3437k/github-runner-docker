@@ -18,36 +18,19 @@ The Docker image is built on Ubuntu 22.04 and includes the following:
 -   **Runner Dependencies:** (e.g., `libicu` and others installed by `installdependencies.sh`)
 
 ## Setup
+**Create a `.env` file:**
 
-1.  **Clone or download this repository.**
+Create a `.env` file in the project root and add your GitHub Personal Access Token (PAT). You need to create a [Personal Access Token](https://github.com/settings/tokens) with the `repo` scope.
 
-2.  **Configure `docker-compose.yml`:**
+```env
+GH_OWNER=<your-github-username>
+GH_REPOSITORY=<your-repository-name>
+GH_TOKEN=<your-github-token>
+```
 
-    Open the `docker-compose.yml` file and replace the placeholder values for `GH_OWNER` and `GH_REPOSITORY`.
+Docker Compose will automatically use this `.env` file to set the `GH_TOKEN` environment variable for the runner container.
 
-    ```yaml
-    services:
-      actions-runner:
-        build: .
-        container_name: my-actions-runner
-        environment:
-          - GH_OWNER: <Your_GitHub_Username_or_Organization> # <-- EDIT THIS
-          - GH_REPOSITORY: <Your_Repository_Name>            # <-- EDIT THIS
-          - GH_TOKEN: ${GH_TOKEN}
-        restart: always
-    ```
-
-3.  **Create a `.env` file:**
-
-    Create a `.env` file in the project root and add your GitHub Personal Access Token (PAT). You need to create a [Personal Access Token](https://github.com/settings/tokens) with the `repo` scope.
-
-    ```env
-    GH_TOKEN=<your_github_token>
-    ```
-
-    Docker Compose will automatically use this `.env` file to set the `GH_TOKEN` environment variable for the runner container.
-
-    > **Important:** You should only need to set a new token in the `.env` file in specific situations where you intentionally bring the runner container down and then back up (e.g., `docker-compose down` and `docker-compose up`).
+> **Important:** You should only need to set a new token in the `.env` file in specific situations where you intentionally bring the runner container down and then back up (e.g., `docker-compose down` and `docker-compose up`).
 
 ## Running the Runner
 
