@@ -1,14 +1,14 @@
 services:
   actions-runner:
-    # 현재 폴더의 Dockerfile을 사용하여 이미지를 빌드합니다.
+    # Builds the image using the Dockerfile in the current directory.
     build: .
-    # 컨테이너의 이름을 지정합니다.
+    # Specifies the container name.
     container_name: my-actions-runner
-    # GitHub 저장소 정보와 토큰을 환경 변수로 전달합니다.
-    # GH_TOKEN은 직접 입력해야 합니다.
+    # Passes GitHub repository information and token as environment variables.
+    # GH_TOKEN must be entered directly.
     environment:
       - GH_OWNER=<GitHub_사용자명_또는_조직명>
       - GH_REPOSITORY=<레포지토리_이름>
       - GH_TOKEN=${GH_TOKEN}
-    # 호스트가 재부팅되어도 컨테이너가 자동으로 다시 시작됩니다.
+    # Restarts the container automatically even if the host reboots.
     restart: always
