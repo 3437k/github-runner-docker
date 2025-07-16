@@ -7,8 +7,8 @@ services:
     # GitHub 저장소 정보와 토큰을 환경 변수로 전달합니다.
     # GH_TOKEN은 직접 입력해야 합니다.
     environment:
-      - GH_OWNER=<<팀_이름>
-      - GH_REPOSITORY=<저장소_이름>
+      - GH_OWNER=<GitHub_사용자명_또는_조직명>
+      - GH_REPOSITORY=<레포지토리_이름>
       - GH_TOKEN=${GH_TOKEN}
     # 호스트가 재부팅되어도 컨테이너가 자동으로 다시 시작됩니다.
     restart: always
