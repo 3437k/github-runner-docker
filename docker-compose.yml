@@ -6,9 +6,7 @@ services:
     container_name: my-actions-runner
     # Passes GitHub repository information and token as environment variables.
     # GH_TOKEN must be entered directly.
-    environment:
-      - GH_OWNER=<GitHub_사용자명_또는_조직명>
-      - GH_REPOSITORY=<레포지토리_이름>
-      - GH_TOKEN=${GH_TOKEN}
+    env_file:
+      - .env
     # Restarts the container automatically even if the host reboots.
     restart: always
