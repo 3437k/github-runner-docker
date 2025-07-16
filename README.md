@@ -7,6 +7,16 @@ This project allows you to run a self-hosted GitHub Actions runner using Docker 
 - [Docker](https://www.docker.com/get-started)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
+## Included Components
+
+The Docker image is built on Ubuntu 22.04 and includes the following:
+
+-   **Base OS:** Ubuntu 22.04
+-   **System Dependencies:** `curl`, `git`, `jq`, `openssh-client`, `rsync`, `sudo`
+-   **Node.js:** v18.x
+-   **GitHub Actions Runner**
+-   **Runner Dependencies:** (e.g., `libicu` and others installed by `installdependencies.sh`)
+
 ## Setup
 
 1.  **Clone or download this repository.**
