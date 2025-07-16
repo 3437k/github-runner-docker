@@ -37,26 +37,21 @@ The Docker image is built on Ubuntu 22.04 and includes the following:
         restart: always
     ```
 
-3.  **Set your GitHub Personal Access Token (PAT):**
+3.  **Create a `.env` file:**
 
-    You need to create a [Personal Access Token](https://github.com/settings/tokens) with the `repo` scope.
+    Create a `.env` file in the project root and add your GitHub Personal Access Token (PAT). You need to create a [Personal Access Token](https://github.com/settings/tokens) with the `repo` scope.
 
-    Then, set it as an environment variable named `GH_TOKEN` in your terminal. This variable will be passed to the Docker container.
-
-    **For PowerShell (Windows):**
-    ```powershell
-    $env:GH_TOKEN = "<your_github_token>"
+    ```env
+    GH_TOKEN=<your_github_token>
     ```
 
-    **For bash/zsh (Linux/macOS):**
-    ```bash
-    export GH_TOKEN="<your_github_token>"
-    ```
-    > **Note:** The environment variable is only set for the current terminal session. For a more permanent solution, consider using a `.env` file or adding it to your shell's profile.
+    Docker Compose will automatically use this `.env` file to set the `GH_TOKEN` environment variable for the runner container.
+
+    > **Important:** You should only need to set a new token in the `.env` file in specific situations where you intentionally bring the runner container down and then back up (e.g., `docker-compose down` and `docker-compose up`).
 
 ## Running the Runner
 
-Once you have configured your `docker-compose.yml` and set the `GH_TOKEN` environment variable, you can start the runner with the following command:
+Once you have configured your `docker-compose.yml` and created the `.env` file, you can start the runner with the following command:
 
 ```bash
 docker-compose up -d --build
