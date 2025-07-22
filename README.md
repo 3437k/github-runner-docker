@@ -11,13 +11,14 @@ This project allows you to run a self-hosted GitHub Actions runner using Docker 
 
 The Docker image is built on Ubuntu 22.04 and includes the following:
 
--   **Base OS:** Ubuntu 22.04
--   **System Dependencies:** `curl`, `git`, `jq`, `openssh-client`, `rsync`, `sudo`
--   **Node.js:** v18.x
--   **GitHub Actions Runner**
--   **Runner Dependencies:** (e.g., `libicu` and others installed by `installdependencies.sh`)
+- **Base OS:** Ubuntu 22.04
+- **System Dependencies:** `curl`, `git`, `jq`, `openssh-client`, `rsync`, `sudo`
+- **Node.js:** v18.x
+- **GitHub Actions Runner**
+- **Runner Dependencies:** (e.g., `libicu` and others installed by `installdependencies.sh`)
 
 ## Setup
+
 **Create a `.env` file:**
 
 Create a `.env` file in the project root and add your GitHub Personal Access Token (PAT). You need to create a [Personal Access Token](https://github.com/settings/tokens) with the `repo` scope.
@@ -27,6 +28,8 @@ GH_OWNER=<your-github-username>
 GH_REPOSITORY=<your-repository-name>
 GH_TOKEN=<your-github-token>
 ```
+
+![Generate Token](./assets/token.png)
 
 Docker Compose will automatically use this `.env` file to set the `GH_TOKEN` environment variable for the runner container.
 
@@ -39,6 +42,8 @@ When working with Docker Compose files and other scripts, ensure your text edito
 **GitHub Settings - Secrets and Variables:**
 
 You need to register your Ubuntu account username as a secret or variable in your GitHub repository settings. Go to **Settings > Secrets and variables > Actions** and add a new repository secret/variable named `USERNAME` with your Ubuntu account username as its value.
+
+![Add Secret](./assets/secrets.png)
 
 **Update your GitHub Actions workflow file:**
 
@@ -61,28 +66,33 @@ Go to your GitHub repository's **Settings > Actions > Runners**. You should see 
 ## Managing the Runner
 
 ### Stopping the Runner
+
 To stop the container without removing it:
+
 ```bash
 docker-compose stop
 ```
 
 ### Stopping and Removing the Runner
+
 To stop and remove the container, run:
+
 ```bash
 docker-compose down
 ```
 
 ### Checking Logs
+
 To view the runner's logs in real-time:
+
 ```bash
 docker-compose logs -f
 ```
 
 ### Accessing the Container
+
 To open a bash shell inside the running container for debugging:
+
 ```bash
 docker exec -it my-actions-runner bash
 ```
-
-
-
