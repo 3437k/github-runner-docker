@@ -32,6 +32,14 @@ Docker Compose will automatically use this `.env` file to set the `GH_TOKEN` env
 
 > **Important:** You should only need to set a new token in the `.env` file in specific situations where you intentionally bring the runner container down and then back up (e.g., `docker-compose down` and `docker-compose up`).
 
+**Editor Line Endings:**
+
+When working with Docker Compose files and other scripts, ensure your text editor is configured to use **LF (Line Feed)** as the line ending style. Using CRLF (Carriage Return Line Feed) can cause issues, especially in Linux-based Docker containers.
+
+**GitHub Settings - Secrets and Variables:**
+
+You need to register your Ubuntu account username as a secret or variable in your GitHub repository settings. Go to **Settings > Secrets and variables > Actions** and add a new repository secret/variable named `USERNAME` with your Ubuntu account username as its value.
+
 **Update your GitHub Actions workflow file:**
 
 In your GitHub Actions workflow file (e.g., `<project>/.github/workflows/<github_action.yml>`), change the `runs-on` value to `runs-on: [self-hosted, linux]` to utilize the self-hosted runner.
