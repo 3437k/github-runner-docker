@@ -1,0 +1,62 @@
+name: Deploy Next.js to VM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, linux]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "1  8"
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Next.js
+        env:
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+          NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+          AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
+          AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
+          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+        run: npm run build
+
+      - name: Deploy with rsync
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.VM_HOST }}
+          REMOTE_USER: ${{ secrets.VM_USERNAME }}
+          REMOTE_PORT: 22
+          SOURCE: "/"
+          EXCLUDE: "/.git/, /node_modules/"
+          TARGET: "/home/deployer/example-app"
+
+      - name: Execute Deployment Script on VM
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            export PATH="$HOME/.volta/bin:$PATH"
+
+            cd /home/deployer/example-app
+            echo "Installing production dependencies..."
+            npm install --production
+
+            echo "Restarting PM2 process..."
+            pm2 restart ${{ secrets.PM2_APP_NAME_OR_ID }}
+
+            echo "Deployment successful!"

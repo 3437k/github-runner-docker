@@ -1,0 +1,11 @@
+services:
+  actions-runner:
+    # Builds the image using the Dockerfile in the current directory.
+    build: .
+    # Specifies the container name.
+    container_name: my-actions-runner-java
+    # Passes GitHub repository information and token as environment variables.    
+    env_file:
+      - .env
+    # Restarts the container automatically even if the host reboots.
+    restart: always

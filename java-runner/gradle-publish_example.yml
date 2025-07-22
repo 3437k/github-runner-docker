@@ -1,0 +1,57 @@
+name: Deploy Java example-api
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, linux]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Make application-prod.properties        
+        run: |
+          mkdir -p src/main/resources
+          echo "${{ secrets.PROD_PROPERTIES }}" > src/main/resources/application-prod.properties
+
+      - name: Grant execute permission for Gradle Wrapper
+        run: chmod +x ./gradlew
+
+      - name: Build Spring Boot App
+        run: ./gradlew bootJar
+
+      - name: Rename JAR for Deployment
+        run: mv build/libs/*.jar build/libs/example-api.jar
+      
+      - name: Upload JAR using rsync
+        uses: easingthemes/ssh-deploy@main
+        with:
+          REMOTE_HOST: ${{ secrets.SERVER_HOST }}
+          REMOTE_USER: ${{ secrets.SERVER_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          REMOTE_PORT: 22          
+          SOURCE: "build/libs/example-api.jar"
+          TARGET: "/home/deployer/example-api/"          
+
+      - name: Restart remote service
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: 22
+          script: |
+            echo "[INFO] Restarting example-api systemd service..."
+            sudo systemctl daemon-reload
+            sudo systemctl restart example-api
+            sudo systemctl status example-api --no-pager
