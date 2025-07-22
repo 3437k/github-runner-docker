@@ -32,6 +32,10 @@ Docker Compose will automatically use this `.env` file to set the `GH_TOKEN` env
 
 > **Important:** You should only need to set a new token in the `.env` file in specific situations where you intentionally bring the runner container down and then back up (e.g., `docker-compose down` and `docker-compose up`).
 
+**Update your GitHub Actions workflow file:**
+
+In your GitHub Actions workflow file (e.g., `<project>/.github/workflows/<github_action.yml>`), change the `runs-on` value to `runs-on: [self-hosted, linux]` to utilize the self-hosted runner.
+
 ## Running the Runner
 
 Once you have configured your `docker-compose.yml` and created the `.env` file, you can start the runner with the following command:
